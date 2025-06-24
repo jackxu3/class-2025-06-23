@@ -1,0 +1,40 @@
+---
+title: "NYC Census"
+author: "Jack Xu"
+format: html
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+# Load required libraries
+library(tidyverse)
+```
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+# Read and clean the data
+nyc_tracts <- read.csv("~/Desktop/projects/class-2025-06-23/nyc_tracts.csv") |> 
+  as_tibble() |> 
+  filter(!is.na(med_income)) # Remove rows with missing income
+
+# Create the plot
+ggplot(nyc_tracts, aes(x = race, y = med_income, fill = race)) +
+  geom_boxplot(outlier.colour = "red", outlier.size = 2, alpha = 0.7) +
+  labs(
+    title = "Median Income by Race in NYC",
+    x = "Race",
+    y = "Median Income",
+    fill = "Race"
+  ) +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_minimal(base_size = 15) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none",
+    plot.title = element_text(size = 18, face = "bold", margin = margin(b = 20)),  # Adjust title size and add bottom margin
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 20)  # Add padding around the entire plot
+  )
+```
